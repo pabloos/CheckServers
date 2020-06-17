@@ -1,0 +1,33 @@
+version: "3.5"
+
+networks:
+  app-net:
+
+services:
+  mongo:
+    image: mongo:latest
+
+    networks:
+      app-net:
+
+  mysql:
+    image: mysql:latest
+
+    networks:
+      app-net:
+
+    environment: 
+      - MYSQL_ROOT_PASSWORD=root
+
+  www:
+    image: alpine:latest
+
+    networks:
+      app-net:
+
+    volumes:
+      - ./bin/:/www/bin
+
+    working_dir: /www/bin/
+
+    command: ./waitOn
