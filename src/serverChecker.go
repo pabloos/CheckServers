@@ -20,9 +20,9 @@ type Server struct {
 
 type Servers []Server
 
-type ServerRegister chan Server
+type ServerCh chan Server
 
-func check(server Server, ready ServerRegister, notReadyChannel ServerRegister) {
+func check(server Server, ready ServerCh, notReadyChannel ServerCh) {
 	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", server.URL, server.Port), timeout)
 
 	if err != nil {
@@ -37,8 +37,7 @@ func check(server Server, ready ServerRegister, notReadyChannel ServerRegister) 
 
 // CheckServers checks if the servers are up for network communication and doesn't return the control until all of them do
 func CheckServers(servers Servers) {
-	readyChannel := make(ServerRegister)
-	notReadyChannel := make(ServerRegister)
+	readyChannel, notReadyChannel := make(ServerCh), make(ServerCh)
 
 	defer close(readyChannel)
 	defer close(notReadyChannel)
