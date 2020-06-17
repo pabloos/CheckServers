@@ -22,6 +22,9 @@ services:
   www:
     image: alpine:latest
 
+    ports: 
+      - "8080:8080"
+
     networks:
       app-net:
 

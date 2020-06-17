@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 )
 
 func main() {
@@ -18,7 +20,11 @@ func main() {
 		},
 	}
 
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello, World!\n")
+	})
+
 	CheckServers(serverDependencies)
 
-	fmt.Println("Servers reached!")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
